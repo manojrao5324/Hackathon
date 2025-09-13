@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLab Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .code-editor {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #2d3748; /* Slightly lighter dark color for editor */
+            color: #e2e8f0;
+            border: 1px solid #4a5568;
+            padding: 1rem;
+            resize: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-gray-900 shadow-md py-4 px-6 md:px-12 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            <h1 class="text-2xl font-bold text-white">CodeLab Pro</h1>
+        </div>
+        <nav>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Home</a>
+            <a href="#" class="ml-4 text-gray-400 hover:text-white transition-colors duration-200">About</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex flex-col md:flex-row p-4 md:p-8 space-y-4 md:space-y-0 md:space-x-8">
+
+        <!-- Sidebar / Navigation -->
+        <aside class="w-full md:w-1/4 bg-gray-800 rounded-lg shadow-lg p-4 h-full">
+            <h2 class="text-xl font-semibold mb-4 text-gray-300">Lessons & Exercises</h2>
+            <nav class="space-y-2">
+                <button onclick="loadLesson('intro')" class="w-full text-left bg-gray-700 hover:bg-gray-600 transition-colors duration-200 text-white font-medium py-2 px-4 rounded-md">Introduction to JavaScript</button>
+                <button onclick="loadLesson('variables')" class="w-full text-left bg-gray-700 hover:bg-gray-600 transition-colors duration-200 text-white font-medium py-2 px-4 rounded-md">Working with Variables</button>
+                <button onclick="loadLesson('loops')" class="w-full text-left bg-gray-700 hover:bg-gray-600 transition-colors duration-200 text-white font-medium py-2 px-4 rounded-md">Loops and Control Flow</button>
+                <button onclick="loadLesson('debug')" class="w-full text-left bg-gray-700 hover:bg-gray-600 transition-colors duration-200 text-white font-medium py-2 px-4 rounded-md">Debugging Challenge</button>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <section class="flex-grow flex flex-col space-y-4">
+            <!-- Tutorial / Instructions Panel -->
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex-grow">
+                <h2 class="text-xl font-semibold mb-2 text-gray-300">Tutorial</h2>
+                <div id="tutorial-content" class="text-gray-400 leading-relaxed">
+                    <p>Welcome to CodeLab Pro! Select a lesson from the left to get started. Each lesson includes a tutorial, a code editor, and a run button to test your code. Good luck!</p>
+                </div>
+            </div>
+
+            <!-- Code Editor and Controls -->
+            <div class="flex-grow flex flex-col">
+                <h2 class="text-xl font-semibold mb-2 text-gray-300">Code Editor</h2>
+                <textarea id="code-editor" class="code-editor flex-grow rounded-lg shadow-lg"></textarea>
+                <button id="run-button" class="mt-4 bg-blue-500 hover:bg-blue-600 transition-colors duration-200 text-white font-bold py-3 px-6 rounded-lg shadow-md self-end">
+                    Run Code
+                </button>
+            </div>
+
+            <!-- Analysis and Output Panel -->
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex-grow">
+                <h2 class="text-xl font-semibold mb-2 text-gray-300">Analysis & Output</h2>
+                <div id="output-area" class="text-gray-400">
+                    <p>Your code output and analysis will appear here.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-4 mt-8 text-center text-gray-500 text-sm">
+        &copy; 2023 CodeLab Pro. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeEditor = document.getElementById('code-editor');
+            const runButton = document.getElementById('run-button');
+            const outputArea = document.getElementById('output-area');
+            const tutorialContent = document.getElementById('tutorial-content');
+
+            const lessons = {
+                intro: {
+                    tutorial: `
+                        <p class="mb-2">This is the introductory lesson. Let's start with a classic "Hello, World!" example. Your goal is to make the code print the message "Hello, World!" to the console.</p>
+                        <p class="mb-2">In JavaScript, you can print a message using the <code>console.log()</code> function.</p>
+                        <p><strong>Exercise:</strong> In the editor below, add a line of code to print "Hello, World!".</p>
+                    `,
+                    code: `// Write your code here
+console.log("Hello, World!");`
+                },
+                variables: {
+                    tutorial: `
+                        <p class="mb-2">Variables are containers for storing data. You can declare a variable using <code>let</code> or <code>const</code>.</p>
+                        <p class="mb-2"><code>let</code> is for variables that can be reassigned, while <code>const</code> is for constants that cannot.</p>
+                        <p><strong>Exercise:</strong> Declare a variable called <code>myAge</code> and assign it your age. Then, print it to the console.</p>
+                    `,
+                    code: `// Declare your variable here
+let myAge = 30;
+
+// Print the variable
+console.log(myAge);`
+                },
+                loops: {
+                    tutorial: `
+                        <p class="mb-2">Loops are used to execute a block of code repeatedly. A <code>for</code> loop is a common way to do this.</p>
+                        <p class="mb-2">The syntax for a <code>for</code> loop is: <code>for (initialization; condition; increment) { ... }</code></p>
+                        <p><strong>Exercise:</strong> Use a <code>for</code> loop to print the numbers from 0 to 4 (inclusive).</p>
+                    `,
+                    code: `// Write your loop here
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}`
+                },
+                debug: {
+                    tutorial: `
+                        <p class="mb-2">Sometimes, code has bugs. Let's practice debugging! The code below has an intentional mistake.</p>
+                        <p class="mb-2"><strong>Exercise:</strong> Fix the code so it runs without an error.</p>
+                    `,
+                    code: `const numbers = [1, 2, 3, 4, 5];
+for (let i = 0; i <= numbers.length; i++) {
+    console.log(numbers[i]);
+}`
+                }
+            };
+
+            // Function to load a lesson
+            window.loadLesson = (lessonName) => {
+                const lesson = lessons[lessonName];
+                if (lesson) {
+                    tutorialContent.innerHTML = lesson.tutorial;
+                    codeEditor.value = lesson.code;
+                    outputArea.innerHTML = '<p>Your code output and analysis will appear here.</p>'; // Clear previous output
+                }
+            };
+
+            // Initial load of the intro lesson
+            loadLesson('intro');
+
+            // Handle the Run Code button click
+            runButton.addEventListener('click', () => {
+                const code = codeEditor.value;
+                outputArea.innerHTML = '<p class="text-yellow-400">Running code...</p>';
+
+                try {
+                    // This is a simplified, client-side simulation of code execution and analysis.
+                    // In a real platform, this would be sent to a server for secure execution.
+
+                    // Check for a specific 'bug' in the debugging challenge
+                    let analysis = '';
+                    if (code.includes('i <= numbers.length')) {
+                        analysis = '<p class="text-red-400 font-bold mt-2">Error Detected:</p><p>You are trying to access an index that is out of bounds. The loop condition `i <= numbers.length` will cause an error on the last iteration because arrays are zero-indexed. The last valid index is `numbers.length - 1`.</p><p class="mt-2"><strong>Debugging Suggestion:</strong> Change the loop condition to <code>i < numbers.length</code> to fix the bug.</p>';
+                    }
+
+                    // A simple way to capture console output. This is not a real console.
+                    let capturedOutput = '';
+                    const originalConsoleLog = console.log;
+                    console.log = (...args) => {
+                        capturedOutput += args.join(' ') + '\n';
+                        originalConsoleLog(...args); // Keep original console log for debugging
+                    };
+
+                    eval(code); // Execute the user's code. NOTE: In a real app, this is insecure and should be done on a server.
+
+                    console.log = originalConsoleLog; // Restore the original console log
+
+                    outputArea.innerHTML = `<p class="text-green-400 font-bold">Code executed successfully!</p>
+                                          <p class="mt-2 font-bold">Output:</p>
+                                          <pre class="bg-gray-900 p-2 rounded-md mt-1 overflow-auto max-h-40">${capturedOutput || 'No output.'}</pre>
+                                          ${analysis}`;
+
+                } catch (error) {
+                    // Handle runtime errors and provide suggestions
+                    outputArea.innerHTML = `<p class="text-red-400 font-bold">Execution failed!</p>
+                                          <p class="mt-2 font-bold">Error Details:</p>
+                                          <pre class="bg-gray-900 p-2 rounded-md mt-1">${error.message}</pre>
+                                          <p class="mt-2"><strong>Debugging Suggestion:</strong> Review the error message to locate the problem. Common issues include typos, incorrect syntax, or trying to use a variable that hasn't been declared.</p>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
